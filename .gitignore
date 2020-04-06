@@ -1,0 +1,9 @@
+#gitignore
+
+#ignore everythin
+*
+
+#but not these files
+!.gitignore
+!Jelly_Neural.py
+!7-31_Sun_Copy.py
