@@ -13,6 +13,7 @@ from keras.layers.convolutional import Conv2D, MaxPooling2D, Conv1D
 from keras.callbacks import EarlyStopping, TensorBoard
 from sklearn.metrics import confusion_matrix
 from time import time
+from keras.utils import plot_model
 
 #train_path = '/home/ryan/Documents/Galaxy_Zoo/Jell_Test/Grayscale/Train_Valid_Mix'#mixed train path
 train_path = '/home/ryan/Documents/Galaxy_Zoo/Jell_Test/Grayscale/Train_Independent'
@@ -71,26 +72,44 @@ model.add(Dense(2, activation='softmax'))
 # model.add(Activation('softmax'))
 ################################
 ###EH 301 PROJECT###
-from keras.layers import Reshape
+# from keras.layers import Reshape
+# model = Sequential()
+# model.add(Conv2D(64,(3,3), input_shape=(424,424,3)))#3x3 is default
+# model.add(Activation('relu'))
+# model.add(MaxPooling2D(pool_size=(3,3)))
+# #model.add(Dropout(.1))#test
+# model.add(Dense(32, activation='relu'))#test
+# model.add(Conv2D(64,(3,3)))#input_shape=(424,424,3)
+# model.add(Activation('relu'))
+# model.add(MaxPooling2D(pool_size=(3,3)))
+# model.add(Dense(64, activation='relu'))
+# model.add(Dropout(.3))#test
+# model.add(Conv2D(64,(3,3)))#input_shape=(424,424,3)
+# model.add(Activation('relu'))
+# model.add(MaxPooling2D(pool_size=(3,3)))
+# model.add(Dropout(.3))
+# model.add(Flatten(input_shape=(424,424,3)))
+# model.add(BatchNormalization())
+# model.add(Dense(2))
+# model.add(Activation('softmax'))
+
+##condense
 model = Sequential()
-model.add(Conv2D(64,(3,3), input_shape=(424,424,3)))#3x3 is default
-model.add(Activation('relu'))
+model.add(Conv2D(64,(3,3), input_shape=(424,424,3), activation='relu'))#3x3 is default
 model.add(MaxPooling2D(pool_size=(3,3)))
 #model.add(Dropout(.1))#test
 model.add(Dense(32, activation='relu'))#test
-model.add(Conv2D(64,(3,3)))#input_shape=(424,424,3)
-model.add(Activation('relu'))
+model.add(Conv2D(64,(3,3), activation='relu'))#input_shape=(424,424,3)
 model.add(MaxPooling2D(pool_size=(3,3)))
 model.add(Dense(64, activation='relu'))
 model.add(Dropout(.3))#test
-model.add(Conv2D(64,(3,3)))#input_shape=(424,424,3)
-model.add(Activation('relu'))
+model.add(Conv2D(64,(3,3), activation='relu'))#input_shape=(424,424,3)
 model.add(MaxPooling2D(pool_size=(3,3)))
 model.add(Dropout(.3))
 model.add(Flatten(input_shape=(424,424,3)))
 model.add(BatchNormalization())
-model.add(Dense(2))
-model.add(Activation('softmax'))
+model.add(Dense(2, activation='softmax'))
+
 #dense64,dense32,flatten,dense,softmax
 ##1585798155.4732356
 #flatten,dense65,dense32,dense,softmax
@@ -103,12 +122,12 @@ model.add(Activation('softmax'))
 ##
 ################################
 print(model.summary())
+#plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)#saves plot
+
 #Compile and run code
 #model.summary()
 myoptimizer = optimizers.Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, amsgrad=False)
-#model.compile(lr = .0001 optimizer = 'adam', loss = 'mean_squared_error', metrics=['accuracy'])#3/2/20
 model.compile(optimizer=myoptimizer, loss = 'mean_squared_error', metrics=['accuracy'] )
-#model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics=['accuracy'])
 #monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=5, verbose=1)
 tensorboard= TensorBoard(log_dir="logs/{}".format(time()))
 #tensorboard.add_graph(tf.summary.histogram)
