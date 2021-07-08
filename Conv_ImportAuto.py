@@ -54,7 +54,6 @@ x = Dense(32, activation='relu', name='Dense2', trainable=True)(x)
 x = Dropout(.3)(x)
 x = Conv2D(8, (3, 3), activation='relu', padding='same', name='Conv3', trainable=True)(x)
 x = MaxPooling2D((2, 2), padding='same', name='Pool3', trainable=True)(x)
-## add weights here?
 x = Dropout(.3)(x)
 x = Conv2D(64,(3,3), activation='relu', trainable=True)(x)
 x = MaxPooling2D(pool_size=(3,3), trainable=True)(x)
@@ -65,10 +64,11 @@ x = BatchNormalization()(x)
 X = Dense(2, activation='softmax')(x)
 
 model = Model(input_img, X)
+
 #load autoencoding model
 model.load_weights('/home/ryan/Documents/Unsupervised_Jelly/Autoenconding/Decoded.h5', by_name=True)
 
-#load same model weights
+#load current model weights when unfreezing layer by layer
 #model.load_weights('/home/ryan/Documents/Galaxy_Zoo/Good_Networks/Weights_CNN.h5')
 
 #print(model.summary())
@@ -79,23 +79,3 @@ model.fit_generator(train_batches, steps_per_epoch=3, validation_data=valid_batc
 
 model.save_weights('Weights_CNN.h5')
 model.save('Model_CNN.h5')
-# #Model
-# model = Sequential()
-# model.add(Conv2D(64,(3,3), input_shape=(424,424,3), activation='relu'))#3x3 is default
-# model.add(MaxPooling2D(pool_size=(3,3)))
-# #model.add(Dropout(.1))#test
-# model.add(Dense(32, activation='relu'))#test
-# model.add(Conv2D(64,(3,3), activation='relu'))#input_shape=(424,424,3)
-# model.add(MaxPooling2D(pool_size=(3,3)))
-# model.add(Dense(64, activation='relu'))
-# model.add(Dropout(.3))#test
-# model.add(Conv2D(64,(3,3), activation='relu'))#input_shape=(424,424,3)
-# model.add(MaxPooling2D(pool_size=(3,3)))
-# #at weights here I think
-# model.add(Dropout(.3))
-# model.add(Flatten(input_shape=(424,424,3)))
-# model.add(BatchNormalization())
-# model.add(Dense(2, activation='softmax'))
-# should look at these
-# https://towardsdatascience.com/gan-by-example-using-keras-on-tensorflow-backend-1a6d515a60d0
-# https://becominghuman.ai/variational-autoencoders-for-new-fruits-with-keras-and-pytorch-6d0cfc4eeabd
